@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+
+    <style>
+      body{
+        background-color: #EBEBEB;
+      }
+
+      .login-box{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        background-color: white;
+        box-shadow: 0px 0px 15px #ABABAB;
+        border-radius: 10px;
+        width: 700px;
+        padding: 50px 0px;
+        font-family: "Helvetica Neue";
+      }
+
+      .logo{
+        font-family: "Helvetica Neue";
+        font-weight: 900;
+        font-size: 40px;
+      }
+
+      .top-text, .logo{
+        width: 100%;
+        margin-bottom: 20px;
+        margin-top: 0px;
+      }
+
+      .top-text{
+        font-size: 30px;
+      }
+
+      #input-fields{
+        width: 300px;
+        margin: 0 auto;
+      }
+
+      .input-text{
+        width: 100%;
+        border-radius: 20px;
+        border: solid 1px #DFDFDF;
+        margin: 10px 0px;
+        box-sizing: border-box;
+        padding: 10px 20px;
+        font-size: 15px;
+      }
+
+      .input-text:focus{
+        outline: none;
+      }
+
+      .input-text::-webkit-input-placeholder {
+        color: #C1C1C1 !important;
+        font-size: 15px !important;
+      }
+
+      .input-text:-moz-placeholder { /* Firefox 18- */
+        color: #C1C1C1 !important;
+        font-size: 15px !important;
+      }
+
+      .input-text::-moz-placeholder {  /* Firefox 19+ */
+        color: #C1C1C1 !important;
+        font-size: 15px !important;
+      }
+
+      .input-text:-ms-input-placeholder {
+        color: #C1C1C1 !important;
+        font-size: 15px !important;
+      }
+
+      #buttons{
+        width: 300px;
+        margin: 0 auto;
+      }
+
+      .btn{
+        width: 100%;
+        border: none;
+        color: white;
+        background-color: #007CF8;
+        font-size: 15px;
+        padding: 10px;
+        border-radius: 20px;
+        margin-top: 10px;
+      }
+
+      .toggle{
+        display: inline-block;
+        color: #2C95FF;
+      }
+
+      .toggle, .btn:hover{
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase-app.js"></script>
+
+    <!-- Add additional services that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase-firestore.js"></script>
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
+
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyAfTnszCSWkonUWpxMbP8JgV00hWrNU2F4",
+        authDomain: "peer-tutor-e464f.firebaseapp.com",
+        databaseURL: "https://peer-tutor-e464f.firebaseio.com",
+        projectId: "peer-tutor-e464f",
+        storageBucket: "peer-tutor-e464f.appspot.com",
+        messagingSenderId: "10869077055"
+      };
+      firebase.initializeApp(config);
+    </script>
+
+    <div id="user-login" style="display: block;" class="login-box">
+      <p id="login-logo" class="logo">Peer Tutor</p>
+      <p id="login-top-text" class="top-text">Login</p>
+
+      <div id="input-fields">
+        <input type="email" placeholder="Email" id="login-email" class="input-text">
+        <br>
+        <input type="password" placeholder="Password" id="login-pwd" class="input-text">
+        <br>
+      </div>
+      <div id="buttons">
+        <button class="btn" id="login-btn">Login</button>
+        <p id="login-signup-btn" class="toggle">Sign Up</p>
+      </div>
+    </div>
+
+    <div id="user-signup" style="display: none;" class="login-box">
+      <p id="signup-logo" class="logo">Peer Tutor</p>
+      <p id="signup-top-text" class="top-text">Sign Up</p>
+
+      <div id="input-fields">
+        <input type="text" placeholder="Name" id="signup-name" class="input-text">
+        <br>
+        <input type="email" placeholder="Email" id="signup-email" class="input-text">
+        <br>
+        <input type="password" placeholder="Password" id="signup-pwd" class="input-text">
+        <br>
+      </div>
+
+      <div id="buttons">
+        <button class="btn" id="signup-btn">Sign Up</button>
+        <p id="signup-login-btn" class="toggle">Login</p>
+      </div>
+    </div>
+
+    <!--<script type="text/javascript" src="login.js"></script>!-->
+    <script type="text/javascript" src="app.js"></script>
+  </body>
+</html>
