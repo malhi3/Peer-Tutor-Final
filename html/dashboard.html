@@ -1,1 +1,51 @@
-<p>Hi</p>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+  </head>
+  <body>
+    <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase-app.js"></script>
+
+    <!-- Add additional services that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-storage.js"></script>
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
+
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyAfTnszCSWkonUWpxMbP8JgV00hWrNU2F4",
+        authDomain: "peer-tutor-e464f.firebaseapp.com",
+        databaseURL: "https://peer-tutor-e464f.firebaseio.com",
+        projectId: "peer-tutor-e464f",
+        storageBucket: "peer-tutor-e464f.appspot.com",
+        messagingSenderId: "10869077055"
+      };
+      firebase.initializeApp(config);
+    </script>
+    <div id="header">
+      <div id="navigation">
+        <ul>
+          <li><a href="dashboard.html"><img src="logo.png" alt="logo"></a></li>
+          <li><input type="search" name="search" placeholder="Search" id="search-bar"></li>
+          <li><div id="profile-popup" class="profile-images"></div></li>
+        </ul>
+      </div>
+      <div id="profile-popup-content" style="display: none;">
+        <div class="profile-data"><div id="profile-image-div" class="profile-images"><input type="file" id="upload-profile-image" style="display: none;"></div></div>
+        <div id="profile-text-data" class="profile-data">
+          <p id="name">Name</p>
+          <p id="email">Email</p>
+        </div>
+      </div>
+    </div>
+
+
+    <script type="text/javascript" src="../js/dashboard.js"></script>
+  </body>
+</html>
