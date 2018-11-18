@@ -3,7 +3,10 @@
   <head>
     <meta charset="utf-8">
     <title></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/loader-css.css">
+    <link rel="stylesheet" href="../css/tutor-card.css">
   </head>
   <body>
     <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase.js"></script>
@@ -28,6 +31,14 @@
       };
       firebase.initializeApp(config);
     </script>
+    <div class="spinner" style="display: none;">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
+
     <div id="header">
       <div id="navigation">
         <ul>
@@ -41,6 +52,38 @@
         <div id="profile-text-data" class="profile-data">
           <p id="name">Name</p>
           <p id="email">Email</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="main-container" style="display: none;">
+      <div id="upcoming-sessions">
+        <h1>Upcoming Sessions</h1>
+        <div id="default-upcomingsess">
+          <h2>You have no upcoming sessions!</h2>
+          <p id="tutor-popup-title">Search for a tutor</p>
+          <input type="search" id="no-session-search">
+        </div>
+      </div>
+
+      <div id="top-tutors">
+        <h1>Top Tutors</h1>
+        <div class="tutor-section-container" id="toptutors-section-container">
+          <div class="tutor-card-container tutor-card">
+            <div class="tutor-image tutor-card" style='background-image: url("../richard.jpeg");'></div>
+            <div class="tutor-card-meta tutor-card">
+              <p class="tutor-name tutor-text tutor-flex-items">Richard Hendricks</p>
+              <p class="tutor-subjects tutor-text tutor-flex-items">Subjects: Physics, Maths</p>
+              <p class="tutor-languages tutor-text tutor-flex-items">Languages: English</p>
+              <div class="tutor-ratings tutor-flex-items">
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

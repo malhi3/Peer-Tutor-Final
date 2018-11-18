@@ -5,6 +5,8 @@
 #navigation{
   box-sizing: border-box;
   position: fixed;
+  z-index: 1;
+  background-color: white;
   left: 0;
   right: 0;
   top: 0;
@@ -76,4 +78,24 @@ li:last-child{
 
 #profile-text-data{
   width: 130px;
+}
+
+.spinner{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.spinner div{
+  box-shadow: 0px 0px 15px #ABABAB;
+}
+
+#main-container{
+  margin-top: 70px;
+}
+
+.tutor-section-container{
+  
 }

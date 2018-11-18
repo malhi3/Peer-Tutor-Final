@@ -1,0 +1,47 @@
+.tutor-card{
+  width: 230px;
+}
+
+.tutor-image{
+  height: 230px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.tutor-card-container{
+  border: solid 1px;
+  transition: 0.3s;
+}
+
+.tutor-card-container:hover{
+  box-shadow: 0px 0px 25px #686868;
+  cursor: pointer;
+}
+
+.checked{
+  color: orange;
+}
+
+.tutor-card-meta{
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  box-sizing: border-box;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.tutor-flex-items{
+  flex: 1;
+}
+
+.tutor-text{
+  margin: 0;
+}
+
+.tutor-name{
+  font-size: 17px;
+  font-weight: bold;
+}

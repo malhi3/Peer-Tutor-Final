@@ -2,7 +2,11 @@ var userID = "";
 var DBRef = firebase.database().ref();
 var userRef;
 var profileImageRef = firebase.storage().ref().child("profile-images");
+var spinner = document.getElementsByClassName("spinner")[0];
+var mainContainer = document.getElementById("main-container");
+
 document.addEventListener('DOMContentLoaded', function(){
+  spinner.style.display = "block";
   firebase.auth().onAuthStateChanged(function(user){
     if (user){
       userID = user.uid;
@@ -21,9 +25,24 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   });
 
-  document.getElementById("profile-image-div").addEventListener('click', function(){
+  var profileImageDiv = document.getElementById("profile-image-div");
+
+  profileImageDiv.addEventListener('click', function(){
     uploadProfileImage();
   });
+
+  var previousProfileImageCSS;
+
+  profileImageDiv.addEventListener('mouseover', function(){
+    previousProfileImageCSS = profileImageDiv.style.backgroundImage;
+    profileImageDiv.style.backgroundImage = 'url("../assets/edit-placeholder.png")';
+    profileImageDiv.style.backgroundColor = "#F0F0F0";
+  });
+
+  profileImageDiv.addEventListener('mouseout', function(){
+    profileImageDiv.style.backgroundImage = previousProfileImageCSS;
+  });
+
 });
 
 function initProfile(){
@@ -55,6 +74,8 @@ function initProfile(){
     var email = snapshot.val();
     var emailText = document.getElementById("email");
     emailText.innerHTML = email;
+    spinner.style.display = "none";
+    mainContainer.style.display = "block";
   });
 }
 
@@ -66,6 +87,7 @@ function uploadProfileImage(){
   inputfile.addEventListener('change', function(){
     var image = inputfile.files[0];
     userImageRef.put(image).then(function(snapshot){
+      spinner.style.display = "block";
       console.log("uploaded");
       initProfile();
     });
