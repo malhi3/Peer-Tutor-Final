@@ -93,3 +93,12 @@ function uploadProfileImage(){
     });
   });
 }
+
+function toggleTutorModal(){
+  var tutorModal = document.getElementById("tutor-modal");
+  if (tutorModal.style.display == "block"){
+    tutorModal.style.display = "none";
+  } else if (tutorModal.style.display == "none"){
+    tutorModal.style.display = "block";
+  }
+}

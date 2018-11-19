@@ -42,7 +42,7 @@
     <div id="header">
       <div id="navigation">
         <ul>
-          <li><a href="dashboard.html"><img src="logo.png" alt="logo"></a></li>
+          <li><a href="dashboard.html"><img src="../logo.png" alt="logo" id="logo"></a></li>
           <li><input type="search" name="search" placeholder="Search" id="search-bar"></li>
           <li><div id="profile-popup" class="profile-images"></div></li>
         </ul>
@@ -66,10 +66,39 @@
         </div>
       </div>
 
-      <div id="top-tutors">
+      <div id="tutor-modal" style="display: none;">
+        <i class="fa fa-close" id="close-button" onclick="toggleTutorModal()"></i>
+        <img src="../richard.jpeg" alt="">
+        <div id="tutor-information">
+          <p id="modal-tutor-name">Richard Hendricks</p>
+          <p id="modal-tutor-subjects">IB Computer Science, IGCSE Maths</p>
+          <p id="modal-tutor-languages">English, German</p>
+          <p id="modal-tutor-description">I'm a professional coder witha love for learning. I got all A* in my GCSE examinations and a 44 in my IB and I want to pass my knowledge to the students of the future. I am fluent in English and German since I grew up in Germany, and I am very good with kids!</p>
+          <div id="form">
+            <select id="session-subject-select">
+              <option id="igcse-maths">IGCSE Maths</option>
+              <option id="ib-sl-comsci">IB SL Computer Science</option>
+              <option id="ib-hl-comsci">IB HL Computer Science</option>
+            </select>
+            <select id="session-language-select">
+              <option id="english">English</option>
+              <option id="german">German</option>
+            </select>
+            <select id="session-time-select">
+              <option id="mon-lunch">Monday Lunctime</option>
+              <option id="tue-lunch">Tuesday Lunctime</option>
+              <option id="thu-lunch">Thursday Lunctime</option>
+              <option id="fri-aftsch">Friday After School</option>
+            </select>
+            <button id="book-session-submit" class="btn">Book Your Session</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="top-tutors" class="tutor-section">
         <h1>Top Tutors</h1>
         <div class="tutor-section-container" id="toptutors-section-container">
-          <div class="tutor-card-container tutor-card">
+          <div class="tutor-card-container tutor-card"  onclick="toggleTutorModal()">
             <div class="tutor-image tutor-card" style='background-image: url("../richard.jpeg");'></div>
             <div class="tutor-card-meta tutor-card">
               <p class="tutor-name tutor-text tutor-flex-items">Richard Hendricks</p>

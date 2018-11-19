@@ -1,5 +1,6 @@
 .tutor-card{
   width: 230px;
+  user-select: none;
 }
 
 .tutor-image{
@@ -11,6 +12,7 @@
 .tutor-card-container{
   border: solid 1px;
   transition: 0.3s;
+  margin-bottom: 50px;
 }
 
 .tutor-card-container:hover{

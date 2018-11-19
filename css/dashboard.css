@@ -2,6 +2,22 @@
   font-family: "Helvetica Neue";
 }
 
+.btn{
+  width: 100%;
+  border: none;
+  color: white;
+  background-color: #007CF8;
+  font-size: 15px;
+  padding: 10px;
+  border-radius: 20px;
+  margin-top: 10px;
+}
+
+#logo{
+  height: 40px;
+  margin-top: 15px;
+}
+
 #navigation{
   box-sizing: border-box;
   position: fixed;
@@ -10,7 +26,7 @@
   left: 0;
   right: 0;
   top: 0;
-  box-shadow: 0px 0px 15px #ABABAB;
+  box-shadow: 0px 1px 10px #ABABAB;
   height: 70px;
 }
 
@@ -25,6 +41,10 @@ ul{
 li{
   float: left;
   margin: 20px;
+}
+
+li:first-child{
+  margin-top: 0;
 }
 
 li:last-child{
@@ -55,6 +75,8 @@ li:last-child{
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   padding: 20px;
+  background-color: white;
+  z-index: 1;
 }
 
 #profile-image-div{
@@ -96,6 +118,68 @@ li:last-child{
   margin-top: 70px;
 }
 
+#upcoming-sessions{
+  border: solid;
+  width: 700px;
+  text-align: center;
+  margin: 0 auto;
+}
+
 .tutor-section-container{
-  
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.tutor-section{
+  margin: 10px 50px;
+}
+
+.tutor-section h1{
+  text-align: center;
+  font-size: 50px;
+  margin-bottom: 50px;
+}
+
+#tutor-modal{
+  position: fixed;
+  border: solid 1px #ABABAB;
+  box-shadow: 0px 0px 15px #ABABAB;
+  width: 900px;
+  height: 400px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  z-index: 1;
+}
+
+#modal-tutor-name{
+  font-size: 30px;
+  font-weight: bold;
+}
+
+#tutor-modal img{
+  width: 300px;
+  height: 400px;
+}
+
+#tutor-information{
+  width: 550px;
+  height: 400px;
+  float: right;
+  margin-right: 30px;
+}
+
+#close-button{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 20px;
+}
+
+#close-button:hover{
+  cursor: pointer;
+  color: #EE4C4C;
 }
