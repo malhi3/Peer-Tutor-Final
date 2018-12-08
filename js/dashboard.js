@@ -5,6 +5,14 @@ var profileImageRef = firebase.storage().ref().child("profile-images");
 var spinner = document.getElementsByClassName("spinner")[0];
 var mainContainer = document.getElementById("main-container");
 
+var tutors = {};
+
+const subjectKeyMap = {
+  "ib-hl-comsci": "IB HL Computer Science",
+  "ib-sl-comsci": "IB SL Computer Science",
+  "igcse-maths": "IGCSE Mathematics"
+}
+
 document.addEventListener('DOMContentLoaded', function(){
   spinner.style.display = "block";
   firebase.auth().onAuthStateChanged(function(user){
@@ -42,6 +50,9 @@ document.addEventListener('DOMContentLoaded', function(){
   profileImageDiv.addEventListener('mouseout', function(){
     profileImageDiv.style.backgroundImage = previousProfileImageCSS;
   });
+
+  // generating and adding all tutor cards
+  generateTutorCards();
 
 });
 
@@ -94,11 +105,96 @@ function uploadProfileImage(){
   });
 }
 
-function toggleTutorModal(){
+function toggleTutorModal(event){
   var tutorModal = document.getElementById("tutor-modal");
   if (tutorModal.style.display == "block"){
     tutorModal.style.display = "none";
   } else if (tutorModal.style.display == "none"){
+    event.preventDefault();
+    var tutorID = event.target.id;
+    console.log(tutorID);
+    createTutorModal();
     tutorModal.style.display = "block";
   }
+}
+
+
+function generateTutorCards(){
+  DBRef.child('Tutors').on('value', function(snapshot){
+    tutors = snapshot.val();
+    const topTutorsSection = document.getElementById("toptutors-section-container");
+    while (topTutorsSection.firstChild) {
+      topTutorsSection.removeChild(topTutorsSection.firstChild);
+    }
+    for (var tutorID in tutors){
+
+      // getting relevant data
+      tutorData = tutors[tutorID];
+      var languages = tutorData["Languages"].split(",");
+      var subjects = tutorData["Subjects"].split(",");
+      for (var item in subjects){
+        subjects[item] = subjectKeyMap[subjects[item]];
+      }
+      var rating = tutorData["Rating"];
+      var name = tutorData["Name"];
+      var description = tutorData["Description"];
+      var sessions = tutorData["Sessions"];
+
+      // creating the card
+      var tutorCardContainer = document.createElement("div");
+      tutorCardContainer.setAttribute("id", tutorID);
+      tutorCardContainer.setAttribute("class", "tutor-card-container tutor-card");
+      tutorCardContainer.setAttribute("onclick", "toggleTutorModal(event)");
+
+      var tutorCardImage = document.createElement("div");
+      tutorCardImage.setAttribute("class", "tutor-image tutor-card");
+      tutorCardImage.style.backgroundImage = "url('../richard.jpeg')";
+
+      var tutorCardMeta = document.createElement("div");
+      tutorCardMeta.setAttribute("class", "tutor-card-meta tutor-card");
+
+      tutorCardContainer.appendChild(tutorCardImage);
+      tutorCardContainer.appendChild(tutorCardMeta);
+
+      // creating the data to the card
+      var nameP = document.createElement("p");
+      nameP.setAttribute("class", "tutor-name tutor-text tutor-flex-items");
+      nameP.innerHTML = name;
+      var subjectsP = document.createElement("p");
+      subjectsP.setAttribute("class", "tutor-subjects tutor-text tutor-flex-items");
+      subjectsP.innerHTML = "<b>Subjects: </b>" + subjects.join(", ");
+      var languagesP = document.createElement("p");
+      languagesP.setAttribute("class", "tutor-languages tutor-text tutor-flex-items");
+      languagesP.innerHTML = "<b>Languages: </b>" + languages.join(", ");
+
+      // adding data to the card
+      tutorCardMeta.appendChild(nameP);
+      tutorCardMeta.appendChild(subjectsP);
+      tutorCardMeta.appendChild(languagesP);
+
+      // creating ratings div
+      var ratingDiv = document.createElement("div");
+      ratingDiv.setAttribute("class", "tutor-ratings tutor-flex-items");
+      for (var i=0; i<5; i++){
+       var star = document.createElement("span");
+       //check if star should be coloured or not
+       if (i<rating){
+         star.setAttribute("class", "fa fa-star checked");
+       } else{
+         star.setAttribute("class", "fa fa-star");
+       }
+       ratingDiv.appendChild(star);
+      }
+
+      // adding rating div to card
+      tutorCardMeta.appendChild(ratingDiv);
+
+      // adding the card to the section container
+      topTutorsSection.appendChild(tutorCardContainer);
+    }
+  });
+}
+
+function createTutorModal(){
+
 }
