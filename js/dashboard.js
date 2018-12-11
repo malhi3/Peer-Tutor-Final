@@ -2,7 +2,7 @@ var userID = "";
 var DBRef = firebase.database().ref();
 var userRef;
 var profileImageRef = firebase.storage().ref().child("profile-images");
-var spinner = document.getElementsByClassName("spinner")[0];
+var spinner = document.getElementById("main-spinner");
 var mainContainer = document.getElementById("main-container");
 
 var tutors = {};
@@ -11,7 +11,20 @@ const subjectKeyMap = {
   "ib-hl-comsci": "IB HL Computer Science",
   "ib-sl-comsci": "IB SL Computer Science",
   "igcse-maths": "IGCSE Mathematics"
-}
+};
+
+const sessionTimeKeyMap = {
+  "mon-lunch": "Monday Lunch (1:25 - 2:25)",
+  "tue-lunch": "Tuesday Lunch (1:25 - 2:25)",
+  "wed-lunch": "Wednesday Lunch (1:25 - 2:25)",
+  "thu-lunch": "Thursday Lunch (1:25 - 2:25)",
+  "fri-lunch": "Friday Lunch (1:25 - 2:25)",
+  "mon-aftsch": "Monday After School (3:30 - 4:30)",
+  "tue-aftsch": "Tuesday After School (3:30 - 4:30)",
+  "wed-aftsch": "Wednesday After School (3:30 - 4:30)",
+  "thu-aftsch": "Thursday After School (3:30 - 4:30)",
+  "fri-aftsch": "Friday After School (3:30 - 4:30)"
+};
 
 document.addEventListener('DOMContentLoaded', function(){
   spinner.style.display = "block";
@@ -24,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function(){
       alert("Not logged in");
     }
   });
+
   document.getElementById("profile-popup").addEventListener('click', function(){
     var profilePopup = document.getElementById("profile-popup-content");
     if (profilePopup.style.display == "none"){
@@ -60,6 +74,10 @@ function initProfile(){
   // setting the profile picture
   var image = profileImageRef.child(userID);
   image.getDownloadURL().then(function(url){
+    console.log(url);
+    var updates = {}
+    updates['Users/'+userID+'/profileImgDwldURL'] = url;
+    DBRef.update(updates);
     var profileImages = document.getElementsByClassName("profile-images");
     for(var index in profileImages){
       var element = profileImages[index];
@@ -111,10 +129,9 @@ function toggleTutorModal(event){
     tutorModal.style.display = "none";
   } else if (tutorModal.style.display == "none"){
     event.preventDefault();
-    var tutorID = event.target.id;
+    var tutorID = event.currentTarget.id;
     console.log(tutorID);
-    createTutorModal();
-    tutorModal.style.display = "block";
+    createTutorModal(tutorID);
   }
 }
 
@@ -139,6 +156,7 @@ function generateTutorCards(){
       var name = tutorData["Name"];
       var description = tutorData["Description"];
       var sessions = tutorData["Sessions"];
+      var imgURL = tutorData["profileImgURL"];
 
       // creating the card
       var tutorCardContainer = document.createElement("div");
@@ -148,7 +166,8 @@ function generateTutorCards(){
 
       var tutorCardImage = document.createElement("div");
       tutorCardImage.setAttribute("class", "tutor-image tutor-card");
-      tutorCardImage.style.backgroundImage = "url('../richard.jpeg')";
+      //tutorCardImage.setAttribute("id", tutorID+"-image");
+      tutorCardImage.style.backgroundImage = "url('"+imgURL+"')";
 
       var tutorCardMeta = document.createElement("div");
       tutorCardMeta.setAttribute("class", "tutor-card-meta tutor-card");
@@ -195,6 +214,56 @@ function generateTutorCards(){
   });
 }
 
-function createTutorModal(){
+function createTutorModal(tutorID){
+  tutor = tutors[tutorID];
+  document.getElementById("modal-tutor-image").src = tutor["profileImgURL"];
+  console.log(tutor);
+  document.getElementById("modal-tutor-name").innerHTML = tutor["Name"];
+  var subjects = tutor["Subjects"].split(",");
+  var languages = tutor["Languages"].split(",");
+  var sessions = tutor["Sessions"];
 
+  // add subjects into dropdown list
+  var sessionSubjectSelect = document.getElementById("session-subject-select");
+  while (sessionSubjectSelect.firstChild) {
+    sessionSubjectSelect.removeChild(sessionSubjectSelect.firstChild);
+  }
+  for (var index in subjects){
+    var subjectOption = document.createElement("option");
+    subjectOption.setAttribute("id", subjects[index]);
+    subjects[index] = subjectKeyMap[subjects[index]];
+    subjectOption.innerHTML = subjects[index];
+    sessionSubjectSelect.appendChild(subjectOption);
+  }
+
+  // add languages into dropdown list
+  var sessionLanguageSelect = document.getElementById("session-language-select");
+  while (sessionLanguageSelect.firstChild) {
+    sessionLanguageSelect.removeChild(sessionLanguageSelect.firstChild);
+  }
+  for (var index in languages){
+    var languageOption = document.createElement("option");
+    languageOption.setAttribute("id", languages[index]);
+    languageOption.innerHTML = languages[index];
+    sessionLanguageSelect.appendChild(languageOption);
+  }
+
+  // add session times into dropdown list
+  var sessionTimeSelect = document.getElementById("session-time-select");
+  while (sessionTimeSelect.firstChild) {
+    sessionTimeSelect.removeChild(sessionTimeSelect.firstChild);
+  }
+  for (var session in sessions){
+    if (sessions[session] == true){
+      var option = document.createElement("option");
+      option.setAttribute("id", session);
+      option.innerHTML = sessionTimeKeyMap[session];
+      sessionTimeSelect.appendChild(option);
+    }
+  }
+
+  document.getElementById("modal-tutor-subjects").innerHTML = subjects.join(", ");
+  document.getElementById("modal-tutor-languages").innerHTML = languages.join(", ");
+  document.getElementById("modal-tutor-description").innerHTML = tutor["Description"];
+  document.getElementById("tutor-modal").style.display = "block";
 }

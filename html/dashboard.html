@@ -31,7 +31,7 @@
       };
       firebase.initializeApp(config);
     </script>
-    <div class="spinner" style="display: none;">
+    <div class="spinner" id="main-spinner" style="display: none;">
       <div class="rect1"></div>
       <div class="rect2"></div>
       <div class="rect3"></div>
@@ -68,7 +68,7 @@
 
       <div id="tutor-modal" style="display: none;">
         <i class="fa fa-close" id="close-button" onclick="toggleTutorModal()"></i>
-        <img src="../richard.jpeg" alt="">
+        <img src="../richard.jpeg" alt="" id="modal-tutor-image">
         <div id="tutor-information">
           <p id="modal-tutor-name">Richard Hendricks</p>
           <p id="modal-tutor-subjects">IB Computer Science, IGCSE Maths</p>
@@ -76,9 +76,9 @@
           <p id="modal-tutor-description">I'm a professional coder witha love for learning. I got all A* in my GCSE examinations and a 44 in my IB and I want to pass my knowledge to the students of the future. I am fluent in English and German since I grew up in Germany, and I am very good with kids!</p>
           <div id="form">
             <select id="session-subject-select">
-              <option id="igcse-maths">IGCSE Maths</option>
+              <!-- <option id="igcse-maths">IGCSE Maths</option>
               <option id="ib-sl-comsci">IB SL Computer Science</option>
-              <option id="ib-hl-comsci">IB HL Computer Science</option>
+              <option id="ib-hl-comsci">IB HL Computer Science</option> -->
             </select>
             <select id="session-language-select">
               <option id="english">English</option>
