@@ -34,7 +34,8 @@ document.addEventListener('DOMContentLoaded', function(){
       userRef = DBRef.child("Users").child(userID);
       initProfile();
     } else {
-      alert("Not logged in");
+      console.log("Not logged in");
+      window.location.replace("../index.html");
     }
   });
 
@@ -266,4 +267,16 @@ function createTutorModal(tutorID){
   document.getElementById("modal-tutor-languages").innerHTML = languages.join(", ");
   document.getElementById("modal-tutor-description").innerHTML = tutor["Description"];
   document.getElementById("tutor-modal").style.display = "block";
+}
+
+function logout(){
+  firebase.auth().signOut().then(function(){
+    window.location.replace("../index.html");
+  }, function(error){
+    alert("Could not logout user");
+  });
+}
+
+function tutorRedirect(){
+
 }
