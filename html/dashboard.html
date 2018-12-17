@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="stylesheet" href="../css/loader-css.css">
     <link rel="stylesheet" href="../css/tutor-card.css">
@@ -39,6 +40,8 @@
       <div class="rect5"></div>
     </div>
 
+    <div id="overlay"></div>
+
     <div id="header">
       <div id="navigation">
         <ul>
@@ -53,7 +56,6 @@
           <p id="name">Name</p>
           <p id="email">Email</p>
         </div>
-        <button id="become-tutor-btn" class="btn" onclick="tutorRedirect()">Become a Tutor!</button>
         <button id="logout-btn" class="btn" onclick="logout()">Logout</button>
       </div>
     </div>
@@ -61,14 +63,14 @@
     <div id="main-container" style="display: none;">
       <div id="upcoming-sessions">
         <h1>Upcoming Sessions</h1>
-        <div id="default-upcomingsess">
+        <div id="default-upcoming-sess" style="display: none;">
           <h2>You have no upcoming sessions!</h2>
           <p id="tutor-popup-title">Search for a tutor</p>
           <input type="search" id="no-session-search">
         </div>
       </div>
 
-      <div id="tutor-modal" style="display: none;">
+      <div id="tutor-modal" class="modal" style="display: none;">
         <i class="fa fa-close" id="close-button" onclick="toggleTutorModal()"></i>
         <img src="../richard.jpeg" alt="" id="modal-tutor-image">
         <div id="tutor-information">
@@ -92,8 +94,24 @@
               <option id="thu-lunch">Thursday Lunctime</option>
               <option id="fri-aftsch">Friday After School</option>
             </select>
-            <button id="book-session-submit" class="btn">Book Your Session</button>
+            <button id="book-session-submit" class="btn" onclick="bookSession()">Book Your Session</button>
           </div>
+        </div>
+      </div>
+
+      <div id="tutor-signup-modal" class="modal">
+        <i class="fa fa-close" id="close-button" onclick="document.getElementById('tutor-signup-modal').style.display = 'none'; document.getElementById('overlay').style.display = 'none';"></i>
+        <h1>Apply To Be A Tutor!</h1>
+        <h2>Simply fill out the corresponding information below, and you'll be on your way to peer tutoring!</h2>
+        <div id="tutor-signup-form">
+          <label for="first-name">First Name: </label>
+          <input type="text" name="tutor-first-name" id="tutor-first-name">
+          <label for="last-name">Last Name: </label>
+          <input type="text" name="tutor-last-name" id="tutor-last-name">
+          <label for="grade">Grade: </label>
+          <input type="text" name="tutor-grade" id="tutor-grade">
+          <label for="homebase">Homebase: </label>
+          <input type="text" name="tutor-homebase" id="tutor-homebase">
         </div>
       </div>
 

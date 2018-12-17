@@ -5,6 +5,9 @@ var profileImageRef = firebase.storage().ref().child("profile-images");
 var spinner = document.getElementById("main-spinner");
 var mainContainer = document.getElementById("main-container");
 
+// needed for booking session
+var selectedTutorID = "";
+
 var tutors = {};
 
 const subjectKeyMap = {
@@ -33,6 +36,8 @@ document.addEventListener('DOMContentLoaded', function(){
       userID = user.uid;
       userRef = DBRef.child("Users").child(userID);
       initProfile();
+      // adding all upcoming sessions
+      updateUpcomingSess();
     } else {
       console.log("Not logged in");
       window.location.replace("../index.html");
@@ -68,7 +73,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
   // generating and adding all tutor cards
   generateTutorCards();
-
 });
 
 function initProfile(){
@@ -107,6 +111,26 @@ function initProfile(){
     spinner.style.display = "none";
     mainContainer.style.display = "block";
   });
+
+  // putting button for tutor homepage (if tutor)
+  userRef.child("accType").once('value').then(function(snapshot){
+    var type = snapshot.val();
+    if (type == "tutor"){
+      var redirectTutorBtn = document.createElement("button");
+      redirectTutorBtn.setAttribute("class", "btn");
+      redirectTutorBtn.setAttribute("id", "redirect-tutor-btn");
+      redirectTutorBtn.innerHTML = "Go to tutor homepage";
+      document.getElementById("profile-popup-content").appendChild(redirectTutorBtn);
+    } else if (type == "tutee"){
+      var becomeTutorBtn = document.createElement("button");
+      becomeTutorBtn.setAttribute("class", "btn");
+      becomeTutorBtn.setAttribute("id", "become-tutor-btn");
+      becomeTutorBtn.setAttribute("onclick", "tutorSignup()");
+      becomeTutorBtn.innerHTML = "Become a tutor";
+      document.getElementById("profile-popup-content").appendChild(becomeTutorBtn);
+    }
+
+  });
 }
 
 function uploadProfileImage(){
@@ -131,6 +155,7 @@ function toggleTutorModal(event){
   } else if (tutorModal.style.display == "none"){
     event.preventDefault();
     var tutorID = event.currentTarget.id;
+    selectedTutorID = tutorID;
     console.log(tutorID);
     createTutorModal(tutorID);
   }
@@ -167,7 +192,6 @@ function generateTutorCards(){
 
       var tutorCardImage = document.createElement("div");
       tutorCardImage.setAttribute("class", "tutor-image tutor-card");
-      //tutorCardImage.setAttribute("id", tutorID+"-image");
       tutorCardImage.style.backgroundImage = "url('"+imgURL+"')";
 
       var tutorCardMeta = document.createElement("div");
@@ -232,6 +256,7 @@ function createTutorModal(tutorID){
   for (var index in subjects){
     var subjectOption = document.createElement("option");
     subjectOption.setAttribute("id", subjects[index]);
+    subjectOption.setAttribute("value", subjects[index]);
     subjects[index] = subjectKeyMap[subjects[index]];
     subjectOption.innerHTML = subjects[index];
     sessionSubjectSelect.appendChild(subjectOption);
@@ -245,6 +270,7 @@ function createTutorModal(tutorID){
   for (var index in languages){
     var languageOption = document.createElement("option");
     languageOption.setAttribute("id", languages[index]);
+    languageOption.setAttribute("value", languages[index]);
     languageOption.innerHTML = languages[index];
     sessionLanguageSelect.appendChild(languageOption);
   }
@@ -258,6 +284,7 @@ function createTutorModal(tutorID){
     if (sessions[session] == true){
       var option = document.createElement("option");
       option.setAttribute("id", session);
+      option.setAttribute("value", session);
       option.innerHTML = sessionTimeKeyMap[session];
       sessionTimeSelect.appendChild(option);
     }
@@ -277,6 +304,91 @@ function logout(){
   });
 }
 
-function tutorRedirect(){
+function tutorSignup(){
+  var tutorFormModal = document.getElementById("tutor-signup-modal");
+  document.getElementById("overlay").style.display = "block";
+  tutorFormModal.style.display = "block";
 
+}
+
+// NOTE: Very Very Very Very Important Function
+function bookSession(){
+  // get all the particulars for the selected session
+  var subjects = document.getElementById("session-subject-select");
+  var languages = document.getElementById("session-language-select");
+  var time = document.getElementById("session-time-select");
+  var selectedSubject = subjects.options[subjects.selectedIndex].value;
+  var selectedLanguage = languages.options[languages.selectedIndex].value;
+  var selectedTime = time.options[time.selectedIndex].value;
+
+  // check if time is booked for tutee
+  DBRef.child("Tutees").child(userID).child("Sessions").child(selectedTime).once('value').then(function(snapshot){
+    if (snapshot.exists() == true){
+      alert("You already have a session here!");
+    } else {
+      // create updates for database
+      var updates = {};
+      sessionTutorUpdate = {
+        'tutee': userID,
+        'subject': selectedSubject,
+        'language': selectedLanguage,
+      };
+      sessionTuteeUpdate = {
+        'tutor': selectedTutorID,
+        'subject': selectedSubject,
+        'language': selectedLanguage
+      };
+      updates['Tutors/'+selectedTutorID+'/Sessions/'+selectedTime] = sessionTutorUpdate;
+      updates['Tutees/'+userID+'/Sessions/'+selectedTime] = sessionTuteeUpdate;
+
+      // update the db
+      DBRef.update(updates);
+
+      window.location.reload();
+    }
+  });
+}
+
+function updateUpcomingSess(){
+  var tuteeSessionRef = DBRef.child("Tutees").child(userID).child("Sessions");
+  tuteeSessionRef.once("value").then(function(snapshot){
+    if (snapshot.exists() == true){
+      sessions = snapshot.val();
+      for (var time in sessions){
+        var tutorID = sessions[time]["tutor"];
+        var timeH = document.createElement("h2");
+        timeH.setAttribute("class", "upcoming-sess-time upcoming");
+        timeH.innerHTML = sessionTimeKeyMap[time];
+        var subjectP = document.createElement("p");
+        subjectP.setAttribute("class", "upcoming-sess-subject upcoming");
+        subjectP.innerHTML = "<b>Subject</b>: " + subjectKeyMap[sessions[time]["subject"]];
+        var languageP = document.createElement("p");
+        languageP.setAttribute("class", "upcoming-sess-language upcoming");
+        languageP.innerHTML = "<b>Language</b>: " + sessions[time]["language"];
+
+        var upcomingSessDiv = document.createElement("div");
+        upcomingSessDiv.setAttribute("id", time+"-session");
+        upcomingSessDiv.setAttribute("class", "upcoming upcoming-sess-div");
+
+        upcomingSessDiv.appendChild(timeH);
+        upcomingSessDiv.appendChild(subjectP);
+        upcomingSessDiv.appendChild(languageP);
+
+        getTutorInfo(tutorID, upcomingSessDiv);
+
+        document.getElementById("upcoming-sessions").appendChild(upcomingSessDiv);
+      }
+    } else {
+      document.getElementById("default-upcoming-sess").style.display = "block";
+    }
+  });
+}
+
+function getTutorInfo(currentTutorID, sessionParentDiv){
+  DBRef.child("Tutors").child(currentTutorID).once('value').then(function(snapshot){
+    console.log(snapshot.val());
+    var tutorNameP = document.createElement("p");
+    tutorNameP.innerHTML = "<b>Tutor</b>: "+snapshot.val()["Name"];
+    sessionParentDiv.appendChild(tutorNameP);
+  });
 }

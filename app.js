@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', function(){
         'userID': id,
         'email': signupEmailField.value,
         'pwd': signupPwdField.value,
+        'accType': 'tutee',
       });
 
       window.location = "html/dashboard.html";
